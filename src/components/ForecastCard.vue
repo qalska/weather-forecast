@@ -1,44 +1,34 @@
 <template>
-  <div>
-    <!-- <h1 class="text-white text-center mt-4">Weather Forecast</h1>
+    <v-container>
+        <v-row align="center"
+            justify="center">
+            <div class="card">
+                <div>
+                    <h2 class="font-weight-bold mt-6 card__h2">
+                        Погода в <span class="font-italic"> {{ weather.cityName }}, {{ weather.country }} </span>
+                    </h2>
 
-    <b-form class="d-flex justify-content-center mt-5 mb-5">
-      <b-col sm="6">
-        <b-form-input
-          v-model="searchValue"
-          size="lg"
-          placeholder="Введите название города">
-        </b-form-input>
-      </b-col>
-    </b-form>
+                    <p class="card__temp"> {{ weather.temperature }}°C </p>
+                    <p class="card__desc m-0"> {{ weather.description }} </p>
 
-    <div class="d-flex justify-content-center mt-5 mb-5">
-      <b-col sm="7">
-        <b-card bg-variant="dark" 
-          text-variant="white" 
-          border-variant="secondary"
-          align="center">
-          <b-card-title>Погода в <cite>{{ weather.cityName }}, {{ weather.country }} </cite></b-card-title>
+                    <v-row
+                        class="mt-8"
+                        align="center"
+                        justify="space-around">
+                        <div>
+                            <p class="card__additions-desc mb-0">Ощущается как:</p>
+                            <p class="card__additions-data"> {{ weather.fellsLike }}°C </p>
+                        </div>
 
-          <b-card-text class="mt-3">
-            <p class="b-card__temp mb-0"> {{ weather.temperature }}°C </p>
-            <p class="fs-4"> {{ weather.description }} </p>
-            <div class="fs-2 d-flex justify-content-around">
-              <div>
-                <p class="fs-5">Ощущается как:</p>
-                <p class="fs-1"> {{ weather.fellsLike }} </p>
-              </div>
-              <div>
-                <p class="fs-5">Влажность: </p>
-                <p class="fs-1"> {{ weather.humidity }} </p>
-              </div>
+                        <div>
+                            <p class="card__additions-desc mb-0">Влажность: </p>
+                            <p class="card__additions-data"> {{ weather.humidity }}% </p>
+                        </div>
+                    </v-row>
+                </div>
             </div>
-          </b-card-text>
-
-        </b-card>
-      </b-col>
-    </div> -->
-  </div>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
@@ -53,12 +43,28 @@ export default {
                 description: 'Облачно',
                 fellsLike: '16',
                 humidity: '50'
-            }
+            },
+            cities: ['asd', 'qwe', '123'],
+            autocompleteValue: null,
         }
     }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+    .card{
+        text-align: center;
+        &__h2{
+            font-size: 35px;
+        }
+        &__temp{
+            font-size: 100px;
+        }
+        &__desc{
+            font-size: 35px;
+        }
+        &__additions-data{
+            font-size: 25px;
+        }
+    }
 </style>

@@ -2,9 +2,9 @@
   <div>
     <v-app-bar
       dense
-      dark>
+      light>
       <v-btn text color="secondary" to="/">Главная</v-btn>
-      <v-btn text color="secondary">Избранное</v-btn>
+      <v-btn text color="secondary" dark>Избранное</v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -15,8 +15,3 @@ export default {
 }
 </script>
 
-<style scoped>
-  .router-link {
-    text-decoration: none;
-  }
-</style>
