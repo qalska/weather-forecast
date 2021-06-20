@@ -60,15 +60,15 @@ export default {
     },
 
     formatFetchingWeatherData(data) {
-      const newWeather = {...this.weather, 
-      cityName: data.name, 
-      country: data.sys.country, 
-      temperature: Math.round(data.main.temp),
-      description: data.weather[0].description,
-      feelsLike: Math.round(data.main.feels_like),
-      humidity: data.main.humidity};
-
-      return this.weather = newWeather;
+      return {
+        ...this.weather, 
+        cityName: data.name, 
+        country: data.sys.country, 
+        temperature: Math.round(data.main.temp),
+        description: data.weather[0].description,
+        feelsLike: Math.round(data.main.feels_like),
+        humidity: data.main.humidity
+      };
     },
 
     async fetchWeather() {
