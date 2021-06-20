@@ -12,12 +12,18 @@
               </v-text-field>
             </v-form>
 
+            <p 
+            v-if="cityNotFound"
+            class="main-page__alert text-center">
+              Город не найден!
+            </p>
         </v-col>
       </v-row>
 
-
     <forecast-card 
-      :weather="weather"/>
+      :weather="weather" 
+      v-if="isShowForecastCard"/>
+
   </div>
 </template>
 
@@ -29,6 +35,8 @@ export default {
   data() {
     return {
       inputValue: '',
+      isShowForecastCard: false,
+      cityNotFound: false,
       weather: {
         cityName: '',
         country: '',
@@ -40,21 +48,39 @@ export default {
     }
   },
   methods: {
+    showForecastCard(name) {
+      if (this.weather.cityName.toLowerCase() === name) {
+        this.isShowForecastCard = true
+        this.cityNotFound = false
+      }
+      else {
+        this.isShowForecastCard = false
+      }
+    },
+
     async fetchWeather() {
       const key = '198ebf0a933855cd1671c851f6e8ce19';
       const baseUrl = `http://api.openweathermap.org/data/2.5/weather?q=${this.inputValue}&lang=ru&units=metric&appid=${key}`;
 
-      const res = await fetch(baseUrl);
-      const weatherData = await res.json();
+      try  {
+        const res = await fetch(baseUrl);
+        const weatherData = await res.json();
 
-      this.weather = weatherData
+        this.inputValue = '';
 
-      this.weather.cityName = weatherData.name
-      this.weather.country = weatherData.sys.country
-      this.weather.temperature = Math.round(weatherData.main.temp)
-      this.weather.description = weatherData.weather[0].description
-      this.weather.feelsLike = Math.round(weatherData.main.feels_like)
-      this.weather.humidity = weatherData.main.humidity
+        this.weather.cityName = weatherData.name;
+        this.weather.country = weatherData.sys.country;
+        this.weather.temperature = Math.round(weatherData.main.temp);
+        this.weather.description = weatherData.weather[0].description;
+        this.weather.feelsLike = Math.round(weatherData.main.feels_like);
+        this.weather.humidity = weatherData.main.humidity;
+
+        this.showForecastCard(weatherData.name.toLowerCase());
+      }
+      catch {
+        this.cityNotFound = true;
+        this.isShowForecastCard = false;
+      }
     },
   },
 
@@ -62,9 +88,14 @@ export default {
 }
 </script>
 
-<style scoped>
-  .main-page__h2{
-    font-size: 40px;
-    letter-spacing: 0.25rem;
+<style lang="scss" scoped>
+  .main-page{
+    &__h2{
+      font-size: 40px;
+      letter-spacing: 0.25rem;
+    }
+    &__alert{
+      font-size: 40px;
+    }
   }
 </style>
