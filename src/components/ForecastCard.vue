@@ -17,7 +17,7 @@
                         justify="space-around">
                         <div>
                             <p class="card__additions-desc mb-0">Ощущается как:</p>
-                            <p class="card__additions-data"> {{ weather.fellsLike }}°C </p>
+                            <p class="card__additions-data"> {{ weather.feelsLike }}°C </p>
                         </div>
 
                         <div>
@@ -32,20 +32,13 @@
 </template>
 
 <script>
+
 export default {
-    data() {
-        return {
-            searchValue: '',
-            weather: {
-                cityName: 'Санкт-Петербург',
-                country: 'Россия',
-                temperature: 18,
-                description: 'Облачно',
-                fellsLike: '16',
-                humidity: '50'
-            },
-            cities: ['asd', 'qwe', '123'],
-            autocompleteValue: null,
+    props: {
+        weather: {
+            type: Object,
+            required: true,
+            default: {}
         }
     }
 }
@@ -62,6 +55,7 @@ export default {
         }
         &__desc{
             font-size: 35px;
+            text-transform: capitalize;
         }
         &__additions-data{
             font-size: 25px;
