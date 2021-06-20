@@ -29,6 +29,7 @@
 
 <script>
 import ForecastCard from "../components/ForecastCard.vue"
+import { key } from "../helpers/consts.js"
 
 export default {
   components: { ForecastCard },
@@ -58,22 +59,28 @@ export default {
       }
     },
 
+    formatFetchingWeatherData(data) {
+      const newWeather = {...this.weather, 
+      cityName: data.name, 
+      country: data.sys.country, 
+      temperature: Math.round(data.main.temp),
+      description: data.weather[0].description,
+      feelsLike: Math.round(data.main.feels_like),
+      humidity: data.main.humidity};
+
+      return this.weather = newWeather;
+    },
+
     async fetchWeather() {
-      const key = '198ebf0a933855cd1671c851f6e8ce19';
       const baseUrl = `http://api.openweathermap.org/data/2.5/weather?q=${this.inputValue}&lang=ru&units=metric&appid=${key}`;
 
+      const res = await fetch(baseUrl);
+      const weatherData = await res.json();
+
       try  {
-        const res = await fetch(baseUrl);
-        const weatherData = await res.json();
+        this.weather = this.formatFetchingWeatherData(weatherData);
 
         this.inputValue = '';
-
-        this.weather.cityName = weatherData.name;
-        this.weather.country = weatherData.sys.country;
-        this.weather.temperature = Math.round(weatherData.main.temp);
-        this.weather.description = weatherData.weather[0].description;
-        this.weather.feelsLike = Math.round(weatherData.main.feels_like);
-        this.weather.humidity = weatherData.main.humidity;
 
         this.showForecastCard(weatherData.name.toLowerCase());
       }

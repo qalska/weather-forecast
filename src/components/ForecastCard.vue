@@ -38,7 +38,7 @@ export default {
         weather: {
             type: Object,
             required: true,
-            default: {}
+            default: () => {}
         }
     }
 }
