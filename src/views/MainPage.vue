@@ -46,6 +46,7 @@ export default {
         feelsLike: null,
         humidity: null
       },
+      favoritesCities: [],
     }
   },
   methods: {

@@ -4,9 +4,17 @@
             justify="center">
             <div class="card">
                 <div>
-                    <h2 class="font-weight-bold mt-6 card__h2">
-                        Погода в <span class="font-italic"> {{ weather.cityName }}, {{ weather.country }} </span>
-                    </h2>
+                    <div>
+                        <h2 class="font-weight-bold mt-6 card__h2">
+                            Погода в <span class="font-italic"> {{ weather.cityName }}, {{ weather.country }} </span>
+                        </h2>
+                        <v-btn
+                        @click="onAddToFavorites(weather.cityName)" 
+                        icon text>
+                            <v-icon v-if="btnNotClicked"> {{ icons.mdiHeartOutline }} </v-icon>
+                            <v-icon v-if="!btnNotClicked"> {{ icons.mdiHeart }} </v-icon>
+                        </v-btn>
+                    </div>
 
                     <p class="card__temp"> {{ weather.temperature }}°C </p>
                     <p class="card__desc m-0"> {{ weather.description }} </p>
@@ -32,6 +40,7 @@
 </template>
 
 <script>
+import { mdiHeartOutline, mdiHeart } from '@mdi/js';
 
 export default {
     props: {
@@ -39,6 +48,32 @@ export default {
             type: Object,
             required: true,
             default: () => {}
+        },
+        favoritesCities: {
+            type: Array,
+            required: false,
+            default: () => []
+        }
+    },
+    data() {
+        return {
+            icons: {
+                mdiHeartOutline,
+                mdiHeart
+            },
+            btnNotClicked: true,
+
+        }
+    },
+    methods: {
+        onAddToFavorites(cityName) {
+            this.btnNotClicked = !this.btnNotClicked
+
+            if (this.btnNotClicked === false) {
+                this.favoritesCities.push(cityName)
+            } else {
+                this.favoritesCities.splice(cityName)
+            }
         }
     }
 }
