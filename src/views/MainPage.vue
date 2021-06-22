@@ -1,5 +1,7 @@
 <template>
   <div class="main-page">
+    <nav-bar 
+    :favoritesCities="favoritesCities" />
       <v-row align="center"
         justify="center">
         <v-col cols="7">
@@ -31,10 +33,11 @@
 
 <script>
 import ForecastCard from "../components/ForecastCard.vue"
+import NavBar from "../components/NavBar.vue";
 import { key } from "../helpers/consts.js"
 
 export default {
-  components: { ForecastCard },
+  components: { ForecastCard, NavBar },
   data() {
     return {
       inputValue: '',
