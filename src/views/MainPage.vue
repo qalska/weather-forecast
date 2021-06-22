@@ -20,8 +20,10 @@
         </v-col>
       </v-row>
 
-    <forecast-card 
-      :weather="weather" 
+    <forecast-card
+      @on-add-to-favorites="onAddToFavorites"
+      :weather="weather"
+      :btnNotClicked="btnNotClicked"
       v-if="isShowForecastCard"/>
 
   </div>
@@ -47,6 +49,7 @@ export default {
         humidity: null
       },
       favoritesCities: [],
+      btnNotClicked: true
     }
   },
   methods: {
@@ -58,6 +61,20 @@ export default {
       else {
         this.isShowForecastCard = false
       }
+    },
+
+    onAddToFavorites(cityName) {
+      this.btnNotClicked = !this.btnNotClicked;
+
+      let clonedfavoritesCities = [...this.favoritesCities];
+
+      if (!this.btnNotClicked) {
+        clonedfavoritesCities.push(cityName)
+      } else {
+        clonedfavoritesCities.splice(cityName)
+      }
+
+      this.favoritesCities = clonedfavoritesCities;
     },
 
     formatFetchingWeatherData(data) {

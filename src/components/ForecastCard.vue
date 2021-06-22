@@ -4,17 +4,24 @@
             justify="center">
             <div class="card">
                 <div>
-                    <div>
+                    <v-row align="center"
+                    justify="center">
                         <h2 class="font-weight-bold mt-6 card__h2">
                             Погода в <span class="font-italic"> {{ weather.cityName }}, {{ weather.country }} </span>
                         </h2>
-                        <v-btn
+                        <v-btn class="mt-5 ml-8"
                         @click="onAddToFavorites(weather.cityName)" 
                         icon text>
-                            <v-icon v-if="btnNotClicked"> {{ icons.mdiHeartOutline }} </v-icon>
-                            <v-icon v-if="!btnNotClicked"> {{ icons.mdiHeart }} </v-icon>
+                            <v-icon 
+                            size="50" v-if="btnNotClicked"> 
+                                {{ icons.mdiHeartOutline }} 
+                            </v-icon>
+                            <v-icon 
+                            size="50" v-if="!btnNotClicked"> 
+                                {{ icons.mdiHeart }} 
+                            </v-icon>
                         </v-btn>
-                    </div>
+                    </v-row>
 
                     <p class="card__temp"> {{ weather.temperature }}°C </p>
                     <p class="card__desc m-0"> {{ weather.description }} </p>
@@ -53,6 +60,10 @@ export default {
             type: Array,
             required: false,
             default: () => []
+        },
+        btnNotClicked: {
+            type: Boolean,
+            required: true,
         }
     },
     data() {
@@ -61,20 +72,12 @@ export default {
                 mdiHeartOutline,
                 mdiHeart
             },
-            btnNotClicked: true,
-
         }
     },
     methods: {
         onAddToFavorites(cityName) {
-            this.btnNotClicked = !this.btnNotClicked
-
-            if (this.btnNotClicked === false) {
-                this.favoritesCities.push(cityName)
-            } else {
-                this.favoritesCities.splice(cityName)
-            }
-        }
+            this.$emit('on-add-to-favorites', cityName)
+        },
     }
 }
 </script>
