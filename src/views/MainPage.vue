@@ -1,13 +1,14 @@
 <template>
   <div class="main-page">
-    <nav-bar 
+    <nav-bar
+    @on-click-favorite-city="onClickFavoriteCity"
     :favoritesCities="favoritesCities" />
       <v-row align="center"
         justify="center">
         <v-col cols="7">
             <h1 class="main-page__h2 mt-6 text-center">Weather Forecast</h1>
 
-            <v-form @submit.prevent="fetchWeather">
+            <v-form @submit.prevent="fetchWeather(inputValue)">
               <v-text-field
               v-model="inputValue"
               label="Введите название города">
@@ -25,7 +26,6 @@
     <forecast-card
       @on-add-to-favorites="onAddToFavorites"
       :weather="weather"
-      :btnNotClicked="btnNotClicked"
       v-if="isShowForecastCard"/>
 
   </div>
@@ -49,10 +49,10 @@ export default {
         temperature: null,
         description: '',
         feelsLike: null,
-        humidity: null
+        humidity: null,
+        inFavorites: false
       },
       favoritesCities: [],
-      btnNotClicked: true
     }
   },
   methods: {
@@ -66,18 +66,26 @@ export default {
       }
     },
 
+    checkForInFavoritesCities(cityName) {
+      return this.favoritesCities.includes(cityName)
+    },
+
     onAddToFavorites(cityName) {
-      this.btnNotClicked = !this.btnNotClicked;
+      this.weather.inFavorites = !this.weather.inFavorites;
 
       let clonedfavoritesCities = [...this.favoritesCities];
 
-      if (!this.btnNotClicked) {
+      if (this.weather.inFavorites) {
         clonedfavoritesCities.push(cityName)
       } else {
-        clonedfavoritesCities.splice(cityName)
+        clonedfavoritesCities.splice(clonedfavoritesCities.indexOf(cityName), 1)
       }
 
       this.favoritesCities = clonedfavoritesCities;
+    },
+
+    onClickFavoriteCity(city) {
+      this.fetchWeather(city)
     },
 
     formatFetchingWeatherData(data) {
@@ -88,12 +96,13 @@ export default {
         temperature: Math.round(data.main.temp),
         description: data.weather[0].description,
         feelsLike: Math.round(data.main.feels_like),
-        humidity: data.main.humidity
+        humidity: data.main.humidity,
+        inFavorites: this.checkForInFavoritesCities(data.name)
       };
     },
 
-    async fetchWeather() {
-      const baseUrl = `http://api.openweathermap.org/data/2.5/weather?q=${this.inputValue}&lang=ru&units=metric&appid=${key}`;
+    async fetchWeather(cityName) {
+      const baseUrl = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&lang=ru&units=metric&appid=${key}`;
 
       const res = await fetch(baseUrl);
       const weatherData = await res.json();
@@ -110,6 +119,7 @@ export default {
         this.isShowForecastCard = false;
       }
     },
+    
   },
 
 

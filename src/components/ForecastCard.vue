@@ -13,11 +13,11 @@
                         @click="onAddToFavorites(weather.cityName)" 
                         icon text>
                             <v-icon 
-                            size="50" v-if="btnNotClicked"> 
+                            size="50" v-if="!weather.inFavorites"> 
                                 {{ icons.mdiHeartOutline }} 
                             </v-icon>
                             <v-icon 
-                            size="50" v-if="!btnNotClicked"> 
+                            size="50" v-if="weather.inFavorites"> 
                                 {{ icons.mdiHeart }} 
                             </v-icon>
                         </v-btn>
@@ -56,15 +56,6 @@ export default {
             required: true,
             default: () => {}
         },
-        favoritesCities: {
-            type: Array,
-            required: false,
-            default: () => []
-        },
-        btnNotClicked: {
-            type: Boolean,
-            required: true,
-        }
     },
     data() {
         return {

@@ -22,7 +22,9 @@
           <v-list-item
             v-for="(city, index) in favoritesCities"
             :key="index">
-            <v-list-item-title>{{ city }}</v-list-item-title>
+            <v-list-item-title>
+              <v-btn text @click="onClickFavoriteCity(city)"> {{ city }} </v-btn>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
 
@@ -40,6 +42,11 @@ export default {
       default: () => []
     }
   },
+  methods: {
+    onClickFavoriteCity(city) {
+      this.$emit('on-click-favorite-city', city)
+    }
+  }
 }
 </script>
 
