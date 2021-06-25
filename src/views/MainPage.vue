@@ -37,7 +37,9 @@ import NavBar from "../components/NavBar.vue";
 import { key } from "../helpers/consts.js"
 
 export default {
-  components: { ForecastCard, NavBar },
+  components: { 
+    ForecastCard, NavBar 
+  },
   data() {
     return {
       inputValue: '',
@@ -56,8 +58,8 @@ export default {
     }
   },
   methods: {
-    showForecastCard(name) {
-      if (this.weather.cityName.toLowerCase() === name) {
+    showForecastCard(cityName) {
+      if (this.weather.cityName.toLowerCase() === cityName) {
         this.isShowForecastCard = true
         this.cityNotFound = false
       }
@@ -75,17 +77,19 @@ export default {
 
       let clonedfavoritesCities = [...this.favoritesCities];
 
+      const indexOfCity = clonedfavoritesCities.indexOf(cityName);
+
       if (this.weather.inFavorites) {
         clonedfavoritesCities.push(cityName)
       } else {
-        clonedfavoritesCities.splice(clonedfavoritesCities.indexOf(cityName), 1)
+        clonedfavoritesCities.splice(indexOfCity, 1)
       }
 
       this.favoritesCities = clonedfavoritesCities;
     },
 
-    onClickFavoriteCity(city) {
-      this.fetchWeather(city)
+    onClickFavoriteCity(cityName) {
+      this.fetchWeather(cityName)
     },
 
     formatFetchingWeatherData(data) {
